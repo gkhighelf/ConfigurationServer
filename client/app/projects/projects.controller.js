@@ -1,27 +1,35 @@
 'use strict';
 
 angular.module('configurationServerApp')
-  .controller('ProjectsCtrl', function ($scope, $http, socket) {
-    $scope.awesomeThings = [];
-
-    $http.get('/api/projects').success(function(awesomeThings) {
-      $scope.awesomeThings = awesomeThings;
-      socket.syncUpdates('projects', $scope.awesomeThings);
-    });
-
-    $scope.addThing = function() {
-      if($scope.newThing === '') {
-        return;
-      }
-      $http.post('/api/projects', { name: $scope.newThing });
-      $scope.newThing = '';
-    };
-
-    $scope.deleteThing = function(thing) {
-      $http.delete('/api/projects/' + thing._id);
-    };
-
-    $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('projects');
-    });
-  });
+    .controller('ProjectsCtrl', ['$scope', '$http','$model', function ($scope, $http, $model) {
+        $scope.projects = $model.init($scope, 'projects');
+        $scope.projects.defaultValues = function() {
+            this.currentValue = {
+                accessKeys: [],
+                allowedIPs: []
+            };
+        }
+        $scope.projects.defaultValues();
+        $scope.projects.list({limit:1000});
+        $scope.addProject = function () {
+            $scope.projects.add($scope.projects.currentValue)
+        };
+        $scope.setCurrent = function(item) {
+            $scope.projects.setCurrent(item);
+        }
+        $scope.deleteProject = function (item) {
+            $scope.projects.delete(item._id);
+        };
+        $scope.addAccessKey = function(key) {
+            $scope.projects.currentValue.accessKeys.push(key);
+        }
+        $scope.removeAccessKey = function(key) {
+            // TODO: implement access key deletion
+        }
+        $scope.addAllowedIP = function(key) {
+            $scope.projects.currentValue.allowedIPs.push(key);
+        }
+        $scope.removeAllowedIP = function(key) {
+            // TODO: implement access key deletion
+        }
+    }]);

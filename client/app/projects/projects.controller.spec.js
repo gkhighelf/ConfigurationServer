@@ -2,28 +2,35 @@
 
 describe('Controller: ProjectsCtrl', function () {
 
-  // load the controller's module
-  beforeEach(module('configurationServerApp'));
-  beforeEach(module('socketMock'));
+    // load the controller's module
+    beforeEach(module('configurationServerApp'));
 
-  var ProjectsCtrl,
-      scope,
-      $httpBackend;
+    var ProjectCtrl,
+        scope;
+    var access_key_value = "qwerty";
+    var allowed_ip = "127.0.0.1";
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
-    $httpBackend = _$httpBackend_;
-    $httpBackend.expectGET('/api/things')
-      .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
+    // Initialize the controller and a mock scope
+    beforeEach(inject(function ($controller, $rootScope) {
+        scope = $rootScope.$new();
+        ProjectCtrl = $controller('ProjectsCtrl', {
+            $scope: scope
+        });
+    }));
 
-    scope = $rootScope.$new();
-    ProjectsCtrl = $controller('ProjectsCtrl', {
-      $scope: scope
+    it('should attach a list of things to the scope', function () {
+        expect(scope.addProject).toBeDefined();
+        expect(scope.setCurrent).toBeDefined();
+        expect(scope.deleteProject).toBeDefined();
+        expect(scope.addAccessKey).toBeDefined();
+        expect(scope.removeAccessKey).toBeDefined();
+        scope.addAccessKey(access_key_value);
+        expect(scope.projects.currentValue.accessKeys[0]).toBe(access_key_value);
+
+        expect(scope.projects.currentValue.allowedIPs).toBeDefined();
+        expect(scope.addAllowedIP).toBeDefined();
+        expect(scope.removeAllowedIP).toBeDefined();
+        scope.addAllowedIP(allowed_ip);
+        expect(scope.projects.currentValue.allowedIPs[0]).toBe(allowed_ip);
     });
-  }));
-
-  it('should attach a list of things to the scope', function () {
-    $httpBackend.flush();
-    expect(scope.awesomeThings.length).toBe(4);
-  });
 });
