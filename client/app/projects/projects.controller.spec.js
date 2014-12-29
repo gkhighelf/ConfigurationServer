@@ -9,6 +9,7 @@ describe('Controller: ProjectsCtrl', function () {
         scope;
     var access_key_value = "qwerty";
     var allowed_ip = "127.0.0.1";
+    var configuration = "development";
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope) {
@@ -22,15 +23,16 @@ describe('Controller: ProjectsCtrl', function () {
         expect(scope.addProject).toBeDefined();
         expect(scope.setCurrent).toBeDefined();
         expect(scope.deleteProject).toBeDefined();
-        expect(scope.addAccessKey).toBeDefined();
-        expect(scope.removeAccessKey).toBeDefined();
-        scope.addAccessKey(access_key_value);
-        expect(scope.projects.currentValue.accessKeys[0]).toBe(access_key_value);
+        expect(scope.setCurrentConfiguration).toBeDefined();
+    });
 
-        expect(scope.projects.currentValue.allowedIPs).toBeDefined();
-        expect(scope.addAllowedIP).toBeDefined();
-        expect(scope.removeAllowedIP).toBeDefined();
-        scope.addAllowedIP(allowed_ip);
-        expect(scope.projects.currentValue.allowedIPs[0]).toBe(allowed_ip);
+    it('should correctly works with project configurations', function () {
+        expect(scope.projects.currentValue.configurations).toBeDefined();
+    });
+
+    it('should correctly works with project variables', function () {
+        expect(scope.addVariable).toBeDefined();
+        expect(scope.setCurrent).toBeDefined();
+        expect(scope.deleteProject).toBeDefined();
     });
 });

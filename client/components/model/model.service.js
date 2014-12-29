@@ -4,7 +4,7 @@
 angular.module('configurationServerApp')
   .factory('$model', ['$http', 'Utils', function($http, Utils) {
     return {
-        init: function($scope, modelName) {
+        init: function($scope, modelName, subModels) {
             var modelDataParamName = modelName + 'Data';
             $scope[modelDataParamName] = [];
             return {
@@ -18,7 +18,7 @@ angular.module('configurationServerApp')
                 'list': function(params, cb) {
                     var url = Utils.buildUrl(this.getModelApiUrl(), params);
                     var self = this;
-                    $http.get(url).success(function(data) {
+                    return $http.get(url).success(function(data) {
                         $scope[modelDataParamName] = data;
                         if(cb) cb(data);
                     });
