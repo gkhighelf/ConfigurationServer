@@ -12,7 +12,8 @@ Vagrant::configure("2") do |config|
       ]
     end
 
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "precise64"
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
   config.vm.hostname = "devbox"
   config.vm.synced_folder ".", "/vagrant", type: "nfs"
